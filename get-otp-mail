@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TOKENSECRET_FILE=~/.google-authenticator/central-tech-email-google
+
+if ! which oathtool >/dev/null 2>&1; then
+  echo "oathtool is required"
+  exit 1
+fi
+
+get_token() {
+  local otp_secret=$(cat $TOKENSECRET_FILE)
+  oathtool --totp --base32 $otp_secret
+}
+echo $(get_token) 
+echo $(get_token) | pbcopy
+
